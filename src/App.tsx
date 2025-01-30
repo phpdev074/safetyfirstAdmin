@@ -116,10 +116,10 @@ function App() {
             }
           />
           <Route
-            path="/business"
+            path="/users"
             element={
               <>
-                <PageTitle title="Business" />
+                <PageTitle title="Users" />
                 <Tables />
               </>
             }
@@ -134,7 +134,7 @@ function App() {
             }
           />
           <Route
-            path="/chart"
+            path="/business"
             element={
               <>
                 <PageTitle title="Basic Chart " />

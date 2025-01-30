@@ -20,9 +20,10 @@ const Login: React.FC = () => {
 
     const onSubmit: SubmitHandler<Inputs> = async(data:any) =>{
         try {
+            data ={...data,role:"user"}
             const newData = await AuthLogin(data)
-            localStorage.setItem("token",newData.data.data.token)
-            localStorage.setItem("userDetails",JSON.stringify(newData.data.data.userData))
+            // localStorage.setItem("token",newData.data.data.token)
+            // localStorage.setItem("userDetails",JSON.stringify(newData.data.data.userData))
             ShowToast("Login Successfully","success")
             navigate('/dashboard')
         } catch (error) {

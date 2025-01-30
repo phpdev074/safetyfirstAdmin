@@ -9,6 +9,8 @@ const TableThree = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  console.log(info,'==>>info')
+
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -20,8 +22,8 @@ const TableThree = () => {
   };
 
   const getUserData = async (page = 1) => {
-    const response = await getUserList(`?limit=10&page=${page}`)
-    console.log(response.data.data,'===>>>response.data.data')
+    const response = await getUserList(`?limit=10&page=${page}&role=user`)
+    console.log(response.data.data,'==>>response.data.data')
     setInfo(response.data.data)
   }
 
@@ -151,7 +153,7 @@ const TableThree = () => {
           <div className="flex justify-end mt-4">
             <Pagination
               currentPage={currentPage}
-              totalPages={info.totalPages}
+              totalPages={info?.pagination?.totalPages}
               onPageChange={handlePageChange}
             />
           </div>

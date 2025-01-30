@@ -6,19 +6,19 @@ import ChartTwo from '../../components/Charts/ChartTwo';
 import ChatCard from '../../components/Chat/ChatCard';
 import MapOne from '../../components/Maps/MapOne';
 import TableOne from '../../components/Tables/TableOne';
-import { getProfile, getUserList } from '../../api/helper';
+import { getDashboardCount, getProfile, getUserList } from '../../api/helper';
 
 const ECommerce: React.FC = () => {
 
   const [info, setInfo] = useState<any>()
 
-  const getUserData = async () => {
-    const response = await getUserList()
+  const getDashboardData = async () => {
+    const response = await getDashboardCount()
     setInfo(response.data.data)
   }
 
   useEffect(() => {
-    getUserData()
+    getDashboardData()
   }, [])
 
 
@@ -26,7 +26,7 @@ const ECommerce: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Users" total={info?.totalUsers}
+        <CardDataStats title="Total Users" total={info?.totalUsers || 0}
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -51,41 +51,8 @@ const ECommerce: React.FC = () => {
           </svg>
         </CardDataStats>
 
-        <CardDataStats title="Total Subscriber" total={"5"}
-        >
-          <svg
-            className="fill-primary dark:fill-white"
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0ZM11 20.3333C6.39303 20.3333 2.66667 16.6069 2.66667 12C2.66667 7.39307 6.39303 3.66667 11 3.66667C15.6069 3.66667 19.3333 7.39307 19.3333 12C19.3333 16.6069 15.6069 20.3333 11 20.3333ZM11 5.33333C9.50903 5.33333 8.33333 6.50903 8.33333 8C8.33333 9.491 9.50903 10.6667 11 10.6667C12.491 10.6667 13.6667 9.491 13.6667 8C13.6667 6.50903 12.491 5.33333 11 5.33333ZM11 13.3333C8.48105 13.3333 6.33333 14.481 6.33333 16C6.33333 17.519 8.48105 18.6667 11 18.6667C13.519 18.6667 15.6667 17.519 15.6667 16C15.6667 14.481 13.519 13.3333 11 13.3333Z"
-            />
-          </svg>
-        </CardDataStats>
-        {/* Total Advisors */}
 
-        <CardDataStats title="Total Advisors" total={"5"}
-        >
-          <svg
-            className="fill-primary dark:fill-white"
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0ZM11 20.3333C6.39303 20.3333 2.66667 16.6069 2.66667 12C2.66667 7.39307 6.39303 3.66667 11 3.66667C15.6069 3.66667 19.3333 7.39307 19.3333 12C19.3333 16.6069 15.6069 20.3333 11 20.3333ZM11 5.33333C9.50903 5.33333 8.33333 6.50903 8.33333 8C8.33333 9.491 9.50903 10.6667 11 10.6667C12.491 10.6667 13.6667 9.491 13.6667 8C13.6667 6.50903 12.491 5.33333 11 5.33333ZM11 13.3333C8.48105 13.3333 6.33333 14.481 6.33333 16C6.33333 17.519 8.48105 18.6667 11 18.6667C13.519 18.6667 15.6667 17.519 15.6667 16C15.6667 14.481 13.519 13.3333 11 13.3333Z"
-            />
-          </svg>
-
-        </CardDataStats>
-
-        <CardDataStats title="Active Users" total={"20"}
+        <CardDataStats title="Active Users" total={info?.activeUsers || 0}
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -105,7 +72,27 @@ const ECommerce: React.FC = () => {
 
         </CardDataStats>
 
-        <CardDataStats title="Active Advisor" total={"8"}
+
+        {/* Total Advisors */}
+
+        <CardDataStats title="Total Advisors" total={info?.totalAdvisor || 0}
+        >
+          <svg
+            className="fill-primary dark:fill-white"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0ZM11 20.3333C6.39303 20.3333 2.66667 16.6069 2.66667 12C2.66667 7.39307 6.39303 3.66667 11 3.66667C15.6069 3.66667 19.3333 7.39307 19.3333 12C19.3333 16.6069 15.6069 20.3333 11 20.3333ZM11 5.33333C9.50903 5.33333 8.33333 6.50903 8.33333 8C8.33333 9.491 9.50903 10.6667 11 10.6667C12.491 10.6667 13.6667 9.491 13.6667 8C13.6667 6.50903 12.491 5.33333 11 5.33333ZM11 13.3333C8.48105 13.3333 6.33333 14.481 6.33333 16C6.33333 17.519 8.48105 18.6667 11 18.6667C13.519 18.6667 15.6667 17.519 15.6667 16C15.6667 14.481 13.519 13.3333 11 13.3333Z"
+            />
+          </svg>
+
+        </CardDataStats>
+
+        <CardDataStats title="Active Advisor" total={info?.activeAdvisor || 0}
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -132,7 +119,7 @@ const ECommerce: React.FC = () => {
 
         </CardDataStats>
 
-        <CardDataStats title="Active Subscriber" total={"10"}
+        <CardDataStats title="Active Subscriber" total={info?.activeSubscriber || 0}// not get in api==> activeSubscriber key
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -160,6 +147,23 @@ const ECommerce: React.FC = () => {
             />
           </svg>
 
+        </CardDataStats>
+
+
+        <CardDataStats title="Total Subscriber" total={info?.totalSubscriber || 0} // not get in api==> totalSubscriber key
+        >
+          <svg
+            className="fill-primary dark:fill-white"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0ZM11 20.3333C6.39303 20.3333 2.66667 16.6069 2.66667 12C2.66667 7.39307 6.39303 3.66667 11 3.66667C15.6069 3.66667 19.3333 7.39307 19.3333 12C19.3333 16.6069 15.6069 20.3333 11 20.3333ZM11 5.33333C9.50903 5.33333 8.33333 6.50903 8.33333 8C8.33333 9.491 9.50903 10.6667 11 10.6667C12.491 10.6667 13.6667 9.491 13.6667 8C13.6667 6.50903 12.491 5.33333 11 5.33333ZM11 13.3333C8.48105 13.3333 6.33333 14.481 6.33333 16C6.33333 17.519 8.48105 18.6667 11 18.6667C13.519 18.6667 15.6667 17.519 15.6667 16C15.6667 14.481 13.519 13.3333 11 13.3333Z"
+            />
+          </svg>
         </CardDataStats>
 
       </div>

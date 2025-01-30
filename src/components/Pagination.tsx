@@ -7,12 +7,43 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-
+  
   // Function to handle page changes
   const handlePageChange = (pageNumber: number) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       onPageChange(pageNumber);
     }
+  };
+
+  // Generate an array of visible page numbers based on the current page
+  const generatePageNumbers = () => {
+    const range = 2; // Number of pages to show before and after the current page
+    const pages = [];
+
+    // If there are fewer pages than the total number of visible pages, just show all
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Add page numbers around the current page
+      if (currentPage - range > 1) {
+        pages.push(1);
+        if (currentPage - range > 2) pages.push('...');
+      }
+
+      // Add current page and range around it
+      for (let i = Math.max(1, currentPage - range); i <= Math.min(totalPages, currentPage + range); i++) {
+        pages.push(i);
+      }
+
+      if (currentPage + range < totalPages) {
+        if (currentPage + range < totalPages - 1) pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
   };
 
   // Render the pagination buttons and page numbers
@@ -35,19 +66,20 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           </li>
 
           {/* Page Numbers */}
-          {[...Array(totalPages)].map((_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <li key={pageNumber}>
+          {generatePageNumbers().map((page, index) => (
+            <li key={index}>
+              {page === '...' ? (
+                <span className="px-3 py-1.5 text-sm font-medium text-gray-500 dark:text-white">...</span>
+              ) : (
                 <button
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`px-3 py-1.5 text-sm font-medium border border-gray-300 dark:border-strokedark rounded-lg hover:bg-gray-100 dark:hover:bg-strokehover ${currentPage === pageNumber ? 'bg-blue-600 text-white dark:bg-blue-500 dark:text-white' : 'bg-white text-gray-500 dark:bg-boxdark dark:text-white'}`}
+                  onClick={() => handlePageChange(Number(page))}
+                  className={`px-3 py-1.5 text-sm font-medium border border-gray-300 dark:border-strokedark rounded-lg hover:bg-gray-100 dark:hover:bg-strokehover ${currentPage === page ? 'bg-blue-600 text-white dark:bg-blue-500 dark:text-white' : 'bg-white text-gray-500 dark:bg-boxdark dark:text-white'}`}
                 >
-                  {pageNumber}
+                  {page}
                 </button>
-              </li>
-            );
-          })}
+              )}
+            </li>
+          ))}
 
           {/* Next Button */}
           <li>
