@@ -12,7 +12,8 @@ import {
   DELETE,
   DELETE_USER,
   GET_DASHBOARD_COUNT,
-  USERLIST
+  USERLIST,
+  UPDATE_USERS
 } from "./url";
 
 export const uploadImage = (payload) => {
@@ -88,3 +89,14 @@ export const deleteUser = (payload) => {
    
   });
 };
+
+
+export const updateUsers = (payload) => {
+  return apiClient({
+    baseURL: BASE_URL,
+    method: POST_METHOD,
+    url: UPDATE_USERS,
+    data: payload
+  });
+};
+

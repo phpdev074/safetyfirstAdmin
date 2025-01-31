@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react';
-import { deleteUser, getUserList } from '../../api/helper';
+import { useEffect, useRef, useState } from 'react';
+import { deleteUser, getUserList, updateUsers } from '../../api/helper';
 import { ShowToast } from '../../helpers/ToastService';
 import Pagination from '../Pagination';
 
 const TableThree = () => {
 
-  const [info, setInfo] = useState<any>([])
+  const [info, setInfo] = useState<any>({ users: [] });
+  const [viewType, setViewType] = useState<"user" | "advisor">("user");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log(info,'==>>info')
+  const [searchValue, setSearchValue] = useState('');
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const getUserData = async (page = 1) => {
-    const response = await getUserList(`?limit=10&page=${page}&role=user`)
-    console.log(response.data.data,'==>>response.data.data')
+  const getUserData = async (page = 1, roleType = viewType, search = "") => {
+    const response = await getUserList(`?limit=10&page=${page}&role=${roleType}&search=${search}`)
+    // console.log(response.data.data, '==>>response.data.data')
     setInfo(response.data.data)
   }
 
   useEffect(() => {
-    getUserData()
+    getUserData(currentPage, viewType)
   }, [])
 
 
@@ -43,16 +43,70 @@ const TableThree = () => {
       if (confirm) {
         const response = await deleteUser(`?id=${id}`)
         ShowToast(response.data.message, 'success')
-        getUserData()
+        getUserData(currentPage, viewType)
       }
     } catch (error) {
       console.log(error)
     }
   }
 
+  const handleChangeViewType = (type: any) => {
+    setViewType(type)
+    getUserData(currentPage, type)
+  }
+
+  const handelSearch = (value: any) => {
+    getUserData(currentPage, viewType, value)
+  }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      handelSearch(value);
+    }, 700);
+  };
+
+  const changeStatus = async (id: string, booldata:Boolean) => {
+     await updateUsers({id:id, status:booldata})
+    ShowToast("Update successfully")
+    getUserData(currentPage, viewType)
+  }
+
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="flex justify-between items-center mb-4">
+      <div className="flex gap-2">
+  <button
+    className={`px-4 py-2 rounded ${viewType === 'user' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+    onClick={() => handleChangeViewType("user")}
+  >
+    Users
+  </button>
+  <button
+    className={`px-4 py-2 rounded ${viewType === 'advisor' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+    onClick={() => handleChangeViewType("advisor")}
+  >
+    Advisors
+  </button>
+</div>
+
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search "
+         className="px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
@@ -72,7 +126,7 @@ const TableThree = () => {
             </tr>
           </thead>
           <tbody>
-            {info && (info as any)?.users?.map((packageItem: any, key: any) => (
+            {info && info?.users?.map((packageItem: any, key: any) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -86,15 +140,13 @@ const TableThree = () => {
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem?.status === 'Paid'
-                        ? 'bg-success text-success'
-                        : packageItem?.status === 'Unpaid'
-                          ? 'bg-danger text-danger'
-                          : 'bg-warning text-warning'
-                      }`}
+
+                  <p onClick={() => changeStatus(packageItem._id,!packageItem?.status)}
+                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium cursor-pointer ${packageItem?.status === true
+                      ? 'bg-success text-success'
+                      : 'bg-danger text-danger'}`}
                   >
-                    {packageItem?.status??'N/A'}
+                    {packageItem?.status === false ? "Pending" : "Approved"}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -161,52 +213,52 @@ const TableThree = () => {
       </div>
 
       <div>
-  
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-          onClick={closeModal}
-        >
 
+        {isModalOpen && (
           <div
-            className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
-            onClick={(e) => e.stopPropagation()} 
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            onClick={closeModal}
           >
-            <button
-              className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              onClick={closeModal}
+
+            <div
+              className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
+              onClick={(e) => e.stopPropagation()}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <h3 className="text-2xl font-semibold text-center mb-4">This is a Modal</h3>
-            <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
-              You can put your content here. This modal can be used for user interactions, forms, etc.
-            </p>
-            <div className="flex justify-center">
               <button
+                className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 onClick={closeModal}
-                className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
               >
-                Close Modal
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
+              <h3 className="text-2xl font-semibold text-center mb-4">This is a Modal</h3>
+              <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
+                You can put your content here. This modal can be used for user interactions, forms, etc.
+              </p>
+              <div className="flex justify-center">
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
+                >
+                  Close Modal
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
 
     </div>
   );

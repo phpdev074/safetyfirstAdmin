@@ -17,3 +17,4 @@ export const DELETE_USER = "deleteUser";
 
 export const GET_DASHBOARD_COUNT ='dashboardData'
 export const USERLIST = 'getUserList'
+export const UPDATE_USERS = 'updateUser'
