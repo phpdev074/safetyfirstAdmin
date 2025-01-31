@@ -72,8 +72,8 @@ const TableThree = () => {
     }, 700);
   };
 
-  const changeStatus = async (id: string, booldata:Boolean) => {
-     await updateUsers({id:id, status:booldata})
+  const changeStatus = async (id: string, booldata: Boolean) => {
+    await updateUsers({ id: id, status: booldata })
     ShowToast("Update successfully")
     getUserData(currentPage, viewType)
   }
@@ -82,26 +82,26 @@ const TableThree = () => {
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="flex justify-between items-center mb-4">
-      <div className="flex gap-2">
-  <button
-    className={`px-4 py-2 rounded ${viewType === 'user' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
-    onClick={() => handleChangeViewType("user")}
-  >
-    Users
-  </button>
-  <button
-    className={`px-4 py-2 rounded ${viewType === 'advisor' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
-    onClick={() => handleChangeViewType("advisor")}
-  >
-    Advisors
-  </button>
-</div>
+        <div className="flex gap-2">
+          <button
+            className={`px-4 py-2 rounded ${viewType === 'user' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+            onClick={() => handleChangeViewType("user")}
+          >
+            Users
+          </button>
+          <button
+            className={`px-4 py-2 rounded ${viewType === 'advisor' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+            onClick={() => handleChangeViewType("advisor")}
+          >
+            Advisors
+          </button>
+        </div>
 
         {/* Search Input */}
         <input
           type="text"
           placeholder="Search "
-         className="px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           value={searchValue}
           onChange={handleSearchChange}
         />
@@ -141,7 +141,7 @@ const TableThree = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 
-                  <p onClick={() => changeStatus(packageItem._id,!packageItem?.status)}
+                  <p onClick={() => changeStatus(packageItem._id, !packageItem?.status)}
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium cursor-pointer ${packageItem?.status === true
                       ? 'bg-success text-success'
                       : 'bg-danger text-danger'}`}
