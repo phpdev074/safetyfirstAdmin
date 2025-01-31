@@ -19,6 +19,9 @@ import DefaultLayout from './layout/DefaultLayout';
 import Login from './pages/Components/Login';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import ContactUs from './pages/Components/ContectUs/ContactUs';
+import Subscription from './pages/Components/Subscription/Subscription';
+import AdvisorsRequest from './pages/Components/AdvisorsRequest/AdvisorsRequest';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,12 +37,12 @@ function App() {
 
   return loading ? (
     <Loader />
-  ) :  (
+  ) : (
     <>
       <Routes>
         {/* Login and Signup routes should be outside the DefaultLayout */}
         <Route
-         index
+          index
           path="/"
           element={
             <>
@@ -80,11 +83,11 @@ function App() {
           />
 
           <Route
-            path="/calendar"
+            path="/subscription"
             element={
               <>
-                <PageTitle title="Calendar " />
-                <Calendar />
+                <PageTitle title="Subscription " />
+                <Subscription />
               </>
             }
           />
@@ -124,6 +127,17 @@ function App() {
               </>
             }
           />
+
+          <Route
+            path="/contactUs"
+            element={
+              <>
+                <PageTitle title="Contact Us" />
+                <ContactUs />
+              </>
+            }
+          />
+
           <Route
             path="/settings"
             element={
@@ -142,6 +156,17 @@ function App() {
               </>
             }
           />
+          {/* Advisors Request */}
+          <Route
+            path="/advisorsRequest"
+            element={
+              <>
+                <PageTitle title="Advisors Request" />
+                <AdvisorsRequest />
+              </>
+            }
+          />
+
           <Route
             path="/ui/alerts"
             element={

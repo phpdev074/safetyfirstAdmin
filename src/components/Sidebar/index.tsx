@@ -176,11 +176,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
+            
+
               {/* Advisors request */}
               <li>
                 <NavLink
-                  to="/business"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('business') && 'bg-graydark dark:bg-meta-4'
+                  to="/advisorsRequest"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('advisorsRequest') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   <svg
@@ -279,8 +281,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <NavLink
-                  to="/business"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('business') && 'bg-graydark dark:bg-meta-4'
+                  to="/subscription"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('subscription') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   <svg
@@ -306,6 +308,39 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/* <!-- Menu Item users --> */}
+
+  {/* contect us */}
+
+  <li>
+                <NavLink
+                  to="/contactUs"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('contactUs') && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="fill-current"
+                  >
+                    <path
+                      d="M3 4C3 2.89543 3.89543 2 5 2H19C20.1046 2 21 2.89543 21 4V14C21 14.5523 20.5523 15 20 15H6L3 18V4Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M9 11L11 13L15 9"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Contact Us
+                </NavLink>
+              </li>
+
 
               {/* <!-- Menu Item Settings --> */}
               <li>

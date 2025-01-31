@@ -2,27 +2,43 @@ import { useEffect, useRef, useState } from 'react';
 import { deleteUser, getUserList, updateUsers } from '../../api/helper';
 import { ShowToast } from '../../helpers/ToastService';
 import Pagination from '../Pagination';
+interface ModalData {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  image: string;
+  status: boolean;
+  role: "user" | "advisor";
+  createdAt: string;
+  updatedAt: string;
+}
 
 const TableThree = () => {
-
   const [info, setInfo] = useState<any>({ users: [] });
   const [viewType, setViewType] = useState<"user" | "advisor">("user");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
 
   const [searchValue, setSearchValue] = useState('');
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const openModal = () => {
+  const openModal = (data: any) => {
     setIsModalOpen(true);
+    setModalData(data)
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setModalData(null)
   };
 
   const getUserData = async (page = 1, roleType = viewType, search = "") => {
-    const response = await getUserList(`?limit=10&page=${page}&role=${roleType}&search=${search}`)
+    let queryRole = roleType === "advisor" ? "advisor&status=true" : roleType;
+    
+    const response = await getUserList(`?limit=10&page=${page}&role=${queryRole}&search=${search}`)
     // console.log(response.data.data, '==>>response.data.data')
     setInfo(response.data.data)
   }
@@ -73,9 +89,13 @@ const TableThree = () => {
   };
 
   const changeStatus = async (id: string, booldata: Boolean) => {
-    await updateUsers({ id: id, status: booldata })
-    ShowToast("Update successfully")
-    getUserData(currentPage, viewType)
+    const confirm = window.confirm("are you sure you want to Reject ?")
+      if (confirm) {
+        await updateUsers({ id: id, status: booldata })
+        ShowToast("Update successfully")
+        getUserData(currentPage, viewType)
+      }
+    
   }
 
 
@@ -106,18 +126,17 @@ const TableThree = () => {
           onChange={handleSearchChange}
         />
       </div>
-
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th className=" py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                 Name
               </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              <th className=" py-4 px-4 font-medium text-black dark:text-white">
                 Email
               </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+              <th className=" py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
@@ -151,7 +170,7 @@ const TableThree = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary" onClick={openModal}  >
+                    <button className="hover:text-primary" onClick={() => openModal(packageItem)}  >
                       <svg
                         className="fill-current"
                         width="18"
@@ -214,50 +233,80 @@ const TableThree = () => {
 
       <div>
 
-        {isModalOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            onClick={closeModal}
+      {
+  isModalOpen && (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      onClick={closeModal}
+    >
+      <div
+        className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+          onClick={closeModal}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
 
-            <div
-              className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                onClick={closeModal}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-              <h3 className="text-2xl font-semibold text-center mb-4">This is a Modal</h3>
-              <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
-                You can put your content here. This modal can be used for user interactions, forms, etc.
-              </p>
-              <div className="flex justify-center">
-                <button
-                  onClick={closeModal}
-                  className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
-                >
-                  Close Modal
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Scrollable Header */}
+        <div className="max-h-20 overflow-y-auto mb-4">
+          <h3 className="text-2xl font-semibold text-center">
+            {modalData?.role === 'user' ? 'User Information' : 'Advisor Information'}
+          </h3>
+        </div>
+
+        {/* Displaying Image */}
+        <div className="flex justify-center mb-4">
+          <img
+            src={modalData?.image || '/path/to/dummy-image.jpg'}  // Use a default image if no image is available
+            alt={modalData?.name || 'User/Advisor'}  // Fallback alt text
+            className="w-24 h-24 rounded-full object-cover"
+          />
+        </div>
+
+        <div className="mb-6">
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+            <strong>Name:</strong> {modalData?.name}
+          </p>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+            <strong>Email:</strong> {modalData?.email}
+          </p>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+            <strong>Phone:</strong> {modalData?.phone}
+          </p>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+            <strong>Status:</strong> {modalData?.status ? 'Active' : 'Inactive'}
+          </p>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            onClick={closeModal}
+            className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
+          >
+            Close Modal
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
       </div>
 
     </div>

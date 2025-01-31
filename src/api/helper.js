@@ -13,11 +13,14 @@ import {
   DELETE_USER,
   GET_DASHBOARD_COUNT,
   USERLIST,
-  UPDATE_USERS
+  UPDATE_USERS,
+  GET_CONTACT_US_LIST,
+  API_BASE_URL,
+  SUBSCRIPTION
 } from "./url";
 
 export const uploadImage = (payload) => {
-  console.log(payload,'==>>payload')
+  console.log(payload, '==>>payload')
   return apiClientUpload({
     baseURL: IMAGE_BASE_URL,
     method: POST_METHOD,
@@ -56,15 +59,52 @@ export const getUserList = (query) => {
   return apiClient({
     baseURL: BASE_URL,
     method: GET_METHOD,
-    url: `${USERLIST}${query?query:""}`,
+    url: `${USERLIST}${query ? query : ""}`,
   });
 };
+
+
+export const getContactUsList = (query) => {
+  return apiClient({
+    baseURL: BASE_URL,
+    method: GET_METHOD,
+    url: `${GET_CONTACT_US_LIST}${query ? query : ""}`,
+  });
+};
+
+
+export const getSubscriptionList = (query) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: GET_METHOD,
+    url: `${SUBSCRIPTION}${query ? query : ""}`,
+  });
+};
+
+export const createSubscription = (payload) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: POST_METHOD,
+    url: `${SUBSCRIPTION}`,
+    data: payload
+  });
+};
+
+export const deleteSubsciption = (payload) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: DELETE,
+    url: `${SUBSCRIPTION}${payload}`,
+
+  });
+};
+
 
 export const getDashboardCount = (query) => {
   return apiClient({
     baseURL: BASE_URL,
     method: GET_METHOD,
-    url: `${GET_DASHBOARD_COUNT}${query?query:""}`,
+    url: `${GET_DASHBOARD_COUNT}${query ? query : ""}`,
   });
 };
 
@@ -86,9 +126,10 @@ export const deleteUser = (payload) => {
     baseURL: BASE_URL,
     method: GET_METHOD,
     url: `${DELETE_USER}${payload}`,
-   
+
   });
 };
+
 
 
 export const updateUsers = (payload) => {
