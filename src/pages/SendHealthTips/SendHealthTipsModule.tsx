@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { getUserList } from '../../api/helper';
+import { getUserList, sendHealthTipsApi } from '../../api/helper';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IMAGE_BASE_URL } from '../../api/url';
+import { ShowToast } from '../../helpers/ToastService';
 interface User {
   _id: string;
   name: string;
@@ -15,13 +16,10 @@ type Inputs = {
 }
 
 function SendHealthTipsModule() {
-  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
-
+  const { register, handleSubmit,reset, formState: { errors } } = useForm<Inputs>()
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [users, setUsers] = useState<User[]>();
-
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   useEffect(() => {
@@ -59,10 +57,21 @@ function SendHealthTipsModule() {
   }, [])
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-
-    console.log(selectedUsers, '===selectedUsers')
-    console.log(data, '===>>>data')
-
+    if(selectedUsers.length==0){
+      return ShowToast('Please Select Users')
+    }
+    const senData = {
+      ...data,
+      users: selectedUsers
+    }
+    try {
+      const response = await sendHealthTipsApi(senData)
+      ShowToast(response.data.message,"success")
+      reset()
+      setSelectedUsers([]);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -133,7 +142,7 @@ function SendHealthTipsModule() {
                     className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                     type="submit"
                   >
-                    Save
+                    Send
                   </button>
                 </div>
               </form>

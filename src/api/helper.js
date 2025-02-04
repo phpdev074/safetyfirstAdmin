@@ -16,7 +16,8 @@ import {
   UPDATE_USERS,
   GET_CONTACT_US_LIST,
   API_BASE_URL,
-  SUBSCRIPTION
+  SUBSCRIPTION,
+  SEND_HEALTH_TIPS
 } from "./url";
 
 export const uploadImage = (payload) => {
@@ -87,6 +88,16 @@ export const createSubscription = (payload) => {
     baseURL: API_BASE_URL,
     method: POST_METHOD,
     url: `${SUBSCRIPTION}`,
+    data: payload
+  });
+};
+
+
+export const sendHealthTipsApi = (payload) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: POST_METHOD,
+    url: `${SEND_HEALTH_TIPS}`,
     data: payload
   });
 };
