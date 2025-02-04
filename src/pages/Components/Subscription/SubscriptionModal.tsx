@@ -70,8 +70,8 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
         {/* Price Input */}
         <input
           type="number"
-          name="price in $"
-          placeholder="Price"
+          name="price"
+          placeholder="Price in $"
           value={formData.price}
           onChange={handleChange}
           className="w-full p-2 mb-3 border rounded"
@@ -79,7 +79,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
 
         {/* Duration Select */}
         <select name="duration" value={formData.duration} onChange={handleChange} className="w-full p-2 mb-3 border rounded">
-          <option value="weekly">Weekly</option>
+          <option value="weekly">weekly</option>
            <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
         </select>
