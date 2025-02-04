@@ -25,12 +25,6 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
   };
 
   // Handle feature addition
-  const addFeature = () => {
-    if (featureInput.trim() !== "") {
-      setFormData({ ...formData, features: [...formData.features, featureInput] });
-      setFeatureInput("");
-    }
-  };
 
   // Handle form submission
   const handleSubmit = () => {
@@ -89,22 +83,23 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
           <input
             type="text"
             placeholder="Feature"
-            value={featureInput}
-            onChange={(e) => setFeatureInput(e.target.value)}
+            value={formData.features}
+             name="features"
+            onChange={handleChange}
             className="w-full p-2 border rounded"
           />
-          <button onClick={addFeature} className="mt-2 px-4 py-2 bg-green-500 text-white rounded">
+          {/* <button onClick={addFeature} className="mt-2 px-4 py-2 bg-green-500 text-white rounded">
             Add Feature
-          </button>
+          </button> */}
         </div>
 
         {/* Features List */}
         <ul className="mb-3">
-          {formData.features.map((feature, index) => (
+          {/* {formData.features.map((feature, index) => (
             <li key={index} className="text-sm text-gray-700 dark:text-gray-300">
               • {feature}
             </li>
-          ))}
+          ))} */}
         </ul>
 
         {/* Status Select */}

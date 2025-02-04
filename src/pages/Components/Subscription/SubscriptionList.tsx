@@ -23,6 +23,11 @@ function SubscriptionList() {
 
     const handleAddSubscription = async (data: Subscription) => {
         setSubscriptions([...subscriptions, data]);
+        data={
+            ...data,
+            features: [data.features]
+        }
+        
         console.log("New Subscription Added:", data);
         await createSubscription(data)
         // console.log(response, '===>>response')
