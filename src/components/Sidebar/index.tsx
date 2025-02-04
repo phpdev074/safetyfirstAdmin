@@ -95,9 +95,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/dashboard"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('dashboard') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('dashboard') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('dashboard') && 'bg-white dark:bg-[#A91D1D]'}`}
+
                 >
                   <svg
                     className="fill-current"
@@ -132,8 +131,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/users"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') && 'bg-graydark dark:bg-meta-4'
+
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  ${pathname.includes('users')?"text-[#A91D1D]":"text-bodydark1" }  duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('users') &&
+                    'bg-white dark:bg-[#A91D1D]'
                     }`}
+                  
                 >
                   <svg
                     className="fill-current"
@@ -160,14 +162,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
+
+
+
             
 
               {/* Advisors request */}
               <li>
                 <NavLink
                   to="/advisorsRequest"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('advisorsRequest') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('advisorsRequest') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('advisorsRequest') && 'bg-white dark:bg-[#A91D1D]'}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -193,12 +197,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
+
+
+              
+
+
+
               {/* Send health tips */}
               <li>
                 <NavLink
                   to="/sendHealthTips"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('sendHealthTips') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('sendHealthTips') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('sendHealthTips') && 'bg-white dark:bg-[#A91D1D]'}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -222,11 +231,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
 
+
+
               <li>
                 <NavLink
                   to="/UserSubscriptionList"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('UserSubscriptionList') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('UserSubscriptionList') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('UserSubscriptionList') && 'bg-white dark:bg-[#A91D1D]'}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -262,12 +272,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/*Add subscription  */}
+             
+
 
               <li>
                 <NavLink
                   to="/subscription"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('subscription') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('subscription') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('subscription') && 'bg-white dark:bg-[#A91D1D]'}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -295,11 +306,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   {/* contect us */}
 
+
+
+
+
   <li>
                 <NavLink
                   to="/contactUs"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('contactUs') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('contactUs') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('contactUs') && 'bg-white dark:bg-[#A91D1D]'}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -330,9 +344,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/settings"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('settings') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ${pathname.includes('settings') ? 'text-[#A91D1D]' : 'text-bodydark1'} duration-300 ease-in-out hover:bg-white dark:hover:bg-[#A91D1D] ${pathname.includes('settings') && 'bg-white dark:bg-[#A91D1D]'}`}
+
                 >
                   <svg
                     className="fill-current"
