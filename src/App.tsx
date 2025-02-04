@@ -22,6 +22,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ContactUs from './pages/Components/ContectUs/ContactUs';
 import Subscription from './pages/Components/Subscription/Subscription';
 import AdvisorsRequest from './pages/Components/AdvisorsRequest/AdvisorsRequest';
+import UserSubscription from './pages/Components/UserSubscription/UserSubscription';
+import SendHealthTips from './pages/SendHealthTips/SendHealthTips';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -100,6 +102,16 @@ function App() {
               </>
             }
           />
+
+          <Route
+            path="/UserSubscriptionList"
+            element={
+              <>
+                <PageTitle title="Subscription List " />
+                <UserSubscription />
+              </>
+            }
+          />
           <Route
             path="/forms/form-elements"
             element={
@@ -147,6 +159,19 @@ function App() {
               </>
             }
           />
+
+
+          <Route
+            path="/sendHealthTips"
+            element={
+              <>
+                <PageTitle title="Send Health Tips " />
+                <SendHealthTips />
+              </>
+            }
+          />
+
+
           <Route
             path="/business"
             element={

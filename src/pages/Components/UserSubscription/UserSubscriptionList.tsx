@@ -1,17 +1,32 @@
+
 import React, { useEffect, useRef, useState } from 'react'
 import Pagination from '../../../components/Pagination';
 import { getUserList, updateUsers } from '../../../api/helper';
 import { ShowToast } from '../../../helpers/ToastService';
 import UserDetails from '../../UserDetails';
 
-function AdvisorsRequestTable() {
+function UserSubscriptionList() {
     const [info, setInfo] = useState<any>({ users: [] });
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-    const [viewType, setViewType] = useState<"user" | "advisor">("advisor");
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
+
+    const [viewType, setViewType] = useState<"user" | "advisor">("advisor");
+
+    const getUserData = async (page = 1, roleType = viewType, search = "") => {
+
+        // const response = await getUserList(`?limit=10&page=${page}&role=${roleType}&status=false&search=${search}`)
+        const response = await getUserList(`?limit=10&page=${page}&status=true&search=${search}`)
+        // console.log(response.data.data, '==>>response.data.data')
+        setInfo(response.data.data)
+    }
+
+    useEffect(() => {
+        getUserData(currentPage, viewType)
+    }, [])
 
     const openModal = (data: any) => {
         setIsModalOpen(true);
@@ -23,16 +38,6 @@ function AdvisorsRequestTable() {
         setModalData(null)
     };
 
-    const getUserData = async (page = 1, roleType = viewType, search = "") => {
-        const response = await getUserList(`?limit=10&page=${page}&role=${roleType}&status=false&search=${search}`)
-        // console.log(response.data.data, '==>>response.data.data')
-        setInfo(response.data.data)
-    }
-
-    useEffect(() => {
-        getUserData(currentPage, viewType)
-    }, [])
-
 
 
     const handlePageChange = (pageNumber: number) => {
@@ -40,7 +45,8 @@ function AdvisorsRequestTable() {
         getUserData(pageNumber);
     };
     const handelSearch = (value: any) => {
-        getUserData(currentPage, value)
+        console.log(value, '===??value')
+        getUserData(currentPage, viewType, value)
     }
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,17 +63,13 @@ function AdvisorsRequestTable() {
     };
 
     const changeStatus = async (id: string, booldata: Boolean) => {
-        const action = booldata ? "Approve" : "Reject";
-        const confirmMessage = `Are you sure you want to ${action}?`;
-
-        const confirm = window.confirm(confirmMessage);
+        const confirm = window.confirm("are you sure you want to Approve ?")
         if (confirm) {
-            await updateUsers({ id: id, status: booldata });
-            ShowToast(`${action}d successfully`);
-            getUserData(currentPage, viewType);
+            await updateUsers({ id: id, status: booldata })
+            ShowToast("Update successfully")
+            getUserData(currentPage, viewType)
         }
     }
-
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -116,25 +118,19 @@ function AdvisorsRequestTable() {
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                    <button
-                                        onClick={() => changeStatus(packageItem._id, true)}
-                                        className={`inline-flex rounded-full py-1 px-3 text-sm font-medium cursor-pointer bg-opacity-10 bg-success text-success`} // Active button will be filled
+                                    <p
+                                        onClick={() => changeStatus(packageItem._id, !packageItem?.status)}
+                                        className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium cursor-pointer ${packageItem?.status === true
+                                            ? 'bg-success text-success'
+                                            : 'bg-danger text-danger'}`}
                                     >
-                                        Approved
-                                    </button>
-
-                                    <button
-                                        onClick={() => changeStatus(packageItem._id, false)}
-                                        className={`inline-flex rounded-full py-1 px-3 text-sm font-medium cursor-pointer bg-opacity-10 bg-danger text-danger`} // Active button will be filled
-                                    >
-                                        Reject
-                                    </button>
+                                        {packageItem?.status === false ? "Pending" : "Approved"}
+                                    </p>
                                 </td>
-
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <div className="flex items-center space-x-3.5">
                                         <button className="hover:text-primary"
-                                         onClick={() => openModal(packageItem)} 
+                                            onClick={() => openModal(packageItem)}
                                         >
                                             <svg
                                                 className="fill-current"
@@ -198,18 +194,21 @@ function AdvisorsRequestTable() {
                 </table>
             </div>
 
+
             <UserDetails
                 isModalOpen={isModalOpen}
                 modalData={modalData}
                 closeModal={closeModal}
             />
 
+
             <div>
 
             </div>
+
 
         </div>
     );
 }
 
-export default AdvisorsRequestTable
+export default UserSubscriptionList

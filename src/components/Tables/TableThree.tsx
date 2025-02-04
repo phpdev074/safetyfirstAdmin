@@ -19,6 +19,7 @@ const TableThree = () => {
   const [info, setInfo] = useState<any>({ users: [] });
   const [viewType, setViewType] = useState<"user" | "advisor">("user");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<ModalData | null>(null);
 

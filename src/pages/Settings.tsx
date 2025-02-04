@@ -8,7 +8,7 @@ import { ShowToast } from '../helpers/ToastService';
 type Inputs = {
   name: string
   email: string
-  mobileNumber: string
+  phone: string
   description: string
 }
 
@@ -29,6 +29,7 @@ const Settings = () => {
   }
 
   const [info, setInfo] = useState<any>(null)
+  
   const getProfileData = async () => {
     const response = await getProfile()
     setInfo(response.data.data)
@@ -155,8 +156,8 @@ const Settings = () => {
 
                         id="phoneNumber"
                         placeholder="+990 3343 7865"
-                        defaultValue={info?.mobileNumber}
-                        {...register("mobileNumber", { required: true })}
+                        defaultValue={info?.phone}
+                        {...register("phone", { required: true })}
                       />
                     </div>
                   </div>
