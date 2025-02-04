@@ -120,7 +120,7 @@ function AdvisorsRequestTable() {
                                         onClick={() => changeStatus(packageItem._id, true)}
                                         className={`inline-flex rounded-full py-1 px-3 text-sm font-medium cursor-pointer bg-opacity-10 bg-success text-success`} // Active button will be filled
                                     >
-                                        Approved
+                                        Approve
                                     </button>
 
                                     <button
