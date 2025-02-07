@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 interface Subscription {
-    name: string;
-    price: number;
-    duration: "monthly" | "yearly";
-    features: string[];
-    status: "active" | "inactive";
-  }
+  name: string;
+  price: number;
+  duration: "monthly" | "yearly";
+  features: string[];
+  status: "active" | "inactive";
+}
 
 const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: () => void; onSubmit: (data: Subscription) => void }) => {
   const [formData, setFormData] = useState<Subscription>({
@@ -29,7 +29,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
   // Handle form submission
   const handleSubmit = () => {
     onSubmit(formData);
-    setFormData({   
+    setFormData({
       name: "",
       price: 0,
       duration: "yearly",
@@ -37,7 +37,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
       status: "active",
     });
     setFeatureInput("");
-    onClose(); 
+    onClose();
   };
 
   return isOpen ? (
@@ -74,7 +74,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
         {/* Duration Select */}
         <select name="duration" value={formData.duration} onChange={handleChange} className="w-full p-2 mb-3 border rounded">
           <option value="weekly">Weekly</option>
-           <option value="monthly">Monthly</option>
+          <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
         </select>
 
@@ -84,7 +84,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
             type="text"
             placeholder="Feature"
             value={formData.features}
-             name="features"
+            name="features"
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -109,9 +109,13 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
         </select>
 
         {/* Submit Button */}
-        <button onClick={handleSubmit} className="w-full px-4 py-2 bg-blue-500 text-white rounded">
+        <button
+          onClick={handleSubmit}
+          className="w-full px-4 py-2 bg-[#A91D1D] text-white rounded hover:bg-opacity-90 dark:bg-[#A91D1D] dark:hover:bg-opacity-90 dark:text-white"
+        >
           Submit
         </button>
+
       </div>
     </div>
   ) : null;

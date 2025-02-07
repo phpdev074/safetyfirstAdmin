@@ -16,7 +16,7 @@ type Inputs = {
 }
 
 function SendHealthTipsModule() {
-  const { register, handleSubmit,reset, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>()
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [users, setUsers] = useState<User[]>();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -57,7 +57,7 @@ function SendHealthTipsModule() {
   }, [])
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if(selectedUsers.length==0){
+    if (selectedUsers.length == 0) {
       return ShowToast('Please Select Users')
     }
     const senData = {
@@ -66,7 +66,7 @@ function SendHealthTipsModule() {
     }
     try {
       const response = await sendHealthTipsApi(senData)
-      ShowToast(response.data.message,"success")
+      ShowToast(response.data.message, "success")
       reset()
       setSelectedUsers([]);
     } catch (error) {
@@ -139,11 +139,12 @@ function SendHealthTipsModule() {
                     Cancel
                   </button>
                   <button
-                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className="flex justify-center rounded py-2 px-6 font-medium text-white bg-[#A91D1D] hover:bg-opacity-90 dark:bg-[#A91D1D] dark:text-white dark:hover:bg-[#A91D1D] dark:hover:text-white"
                     type="submit"
                   >
                     Send
                   </button>
+
                 </div>
               </form>
             </div>
@@ -187,8 +188,9 @@ function SendHealthTipsModule() {
                         type="checkbox"
                         checked={selectedUsers.includes(user._id)} // Check if user is selected
                         onChange={(e) => handleCheckboxChange(user._id, e.target.checked)} // Handle checkbox change
-                        className="form-checkbox h-5 w-5 text-primary dark:bg-meta-4 dark:border-strokedark"
+                        className="form-checkbox h-5 w-5 text-white bg-[#A91D1D] border-[#A91D1D] dark:bg-[#A91D1D] dark:border-[#A91D1D] dark:checked:bg-[#A91D1D] dark:checked:border-[#A91D1D] checked:bg-[#A91D1D] checked:border-[#A91D1D] hover:bg-opacity-90"
                       />
+
                     </label>
                   </div>
                 </div>

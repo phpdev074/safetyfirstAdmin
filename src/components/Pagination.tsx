@@ -55,7 +55,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           <li>
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className="px-3 py-1.5 text-sm font-medium text-gray-500 bg-white border border-gray-300 dark:bg-boxdark dark:border-strokedark rounded-l-lg hover:bg-gray-100 dark:hover:bg-strokehover disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-strokedark"
+              className="px-3 py-1.5 text-sm font-medium text-white bg-[#A91D1D] border-[#A91D1D] rounded-l-lg hover:bg-opacity-90 dark:bg-[#A91D1D] dark:border-[#A91D1D] dark:hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-strokedark"
               disabled={currentPage === 1}
             >
               <span className="sr-only">Previous</span>
@@ -73,7 +73,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
               ) : (
                 <button
                   onClick={() => handlePageChange(Number(page))}
-                  className={`px-3 py-1.5 text-sm font-medium border border-gray-300 dark:border-strokedark rounded-lg hover:bg-gray-100 dark:hover:bg-strokehover ${currentPage === page ? 'bg-blue-600 text-white dark:bg-blue-500 dark:text-white' : 'bg-white text-gray-500 dark:bg-boxdark dark:text-white'}`}
+                  className={`px-3 py-1.5 text-sm font-medium border border-[#A91D1D] rounded-lg hover:bg-opacity-90 dark:hover:bg-opacity-90 ${currentPage === page ? 'bg-[#A91D1D] text-white dark:bg-[#A91D1D] dark:text-white' : 'bg-white text-[#A91D1D] dark:bg-boxdark dark:text-white'}`}
                 >
                   {page}
                 </button>
@@ -85,7 +85,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           <li>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className="px-3 py-1.5 text-sm font-medium text-gray-500 bg-white border border-gray-300 dark:bg-boxdark dark:border-strokedark rounded-r-lg hover:bg-gray-100 dark:hover:bg-strokehover disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-strokedark"
+              className="px-3 py-1.5 text-sm font-medium text-white bg-[#A91D1D] border-[#A91D1D] rounded-r-lg hover:bg-opacity-90 dark:bg-[#A91D1D] dark:border-[#A91D1D] dark:hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-strokedark"
               disabled={currentPage === totalPages}
             >
               <span className="sr-only">Next</span>

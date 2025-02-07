@@ -19,7 +19,7 @@ const TableThree = () => {
   const [info, setInfo] = useState<any>({ users: [] });
   const [viewType, setViewType] = useState<"user" | "advisor">("user");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<ModalData | null>(null);
 
@@ -38,9 +38,9 @@ const TableThree = () => {
 
   const getUserData = async (page = 1, roleType = viewType, search = "") => {
     let queryRole = roleType === "advisor" ? "advisor&status=true" : roleType;
-    
+
     const response = await getUserList(`?limit=10&page=${page}&role=${queryRole}&search=${search}`)
-    // console.log(response.data.data, '==>>response.data.data')
+    console.log(response.data.data, '==>>response.data.data')
     setInfo(response.data.data)
   }
 
@@ -91,12 +91,12 @@ const TableThree = () => {
 
   const changeStatus = async (id: string, booldata: Boolean) => {
     const confirm = window.confirm("are you sure you want to Reject ?")
-      if (confirm) {
-        await updateUsers({ id: id, status: booldata })
-        ShowToast("Update successfully")
-        getUserData(currentPage, viewType)
-      }
-    
+    if (confirm) {
+      await updateUsers({ id: id, status: booldata })
+      ShowToast("Update successfully")
+      getUserData(currentPage, viewType)
+    }
+
   }
 
 
@@ -105,13 +105,14 @@ const TableThree = () => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-2">
           <button
-            className={`px-4 py-2 rounded ${viewType === 'user' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+            className={`px-4 py-2 rounded ${viewType === 'user' ? 'bg-[#A91D1D] text-white dark:bg-[#A91D1D] dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-[#A91D1D]'}`}
             onClick={() => handleChangeViewType("user")}
           >
             Users
           </button>
+
           <button
-            className={`px-4 py-2 rounded ${viewType === 'advisor' ? 'bg-blue-500 text-white dark:bg-blue-700 dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-white'}`}
+            className={`px-4 py-2 rounded ${viewType === 'advisor' ? 'bg-[#A91D1D] text-white dark:bg-[#A91D1D] dark:text-white' : 'bg-gray-200 dark:bg-gray-600 dark:text-[#A91D1D]'}`}
             onClick={() => handleChangeViewType("advisor")}
           >
             Advisors
@@ -234,79 +235,79 @@ const TableThree = () => {
 
       <div>
 
-      {
-  isModalOpen && (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      onClick={closeModal}
-    >
-      <div
-        className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-          onClick={closeModal}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+        {
+          isModalOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+              onClick={closeModal}
+            >
+              <div
+                className="bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg w-96 p-6 relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                  onClick={closeModal}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
 
-        {/* Scrollable Header */}
-        <div className="max-h-20 overflow-y-auto mb-4">
-          <h3 className="text-2xl font-semibold text-center">
-            {modalData?.role === 'user' ? 'User Information' : 'Advisor Information'}
-          </h3>
-        </div>
+                {/* Scrollable Header */}
+                <div className="max-h-20 overflow-y-auto mb-4">
+                  <h3 className="text-2xl font-semibold text-center">
+                    {modalData?.role === 'user' ? 'User Information' : 'Advisor Information'}
+                  </h3>
+                </div>
 
-        {/* Displaying Image */}
-        <div className="flex justify-center mb-4">
-          <img
-            src={modalData?.image || '/path/to/dummy-image.jpg'}  // Use a default image if no image is available
-            alt={modalData?.name || 'User/Advisor'}  // Fallback alt text
-            className="w-24 h-24 rounded-full object-cover"
-          />
-        </div>
+                {/* Displaying Image */}
+                <div className="flex justify-center mb-4">
+                  <img
+                    src={modalData?.image || '/path/to/dummy-image.jpg'}  // Use a default image if no image is available
+                    alt={modalData?.name || 'User/Advisor'}  // Fallback alt text
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                </div>
 
-        <div className="mb-6">
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
-            <strong>Name:</strong> {modalData?.name}
-          </p>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
-            <strong>Email:</strong> {modalData?.email}
-          </p>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
-            <strong>Phone:</strong> {modalData?.phone}
-          </p>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
-            <strong>Status:</strong> {modalData?.status ? 'Active' : 'Inactive'}
-          </p>
-        </div>
+                <div className="mb-6">
+                  <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+                    <strong>Name:</strong> {modalData?.name}
+                  </p>
+                  <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+                    <strong>Email:</strong> {modalData?.email}
+                  </p>
+                  <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+                    <strong>Phone:</strong> {modalData?.phone}
+                  </p>
+                  <p className="text-center text-gray-600 dark:text-gray-300 mb-2">
+                    <strong>Status:</strong> {modalData?.status ? 'Active' : 'Inactive'}
+                  </p>
+                </div>
 
-        <div className="flex justify-center">
-          <button
-            onClick={closeModal}
-            className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
-          >
-            Close Modal
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+                <div className="flex justify-center">
+                  <button
+                    onClick={closeModal}
+                    className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
+                  >
+                    Close Modal
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+        }
 
       </div>
 

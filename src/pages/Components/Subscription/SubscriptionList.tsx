@@ -25,7 +25,7 @@ function SubscriptionList() {
         setSubscriptions([...subscriptions, data]);
         data={
             ...data,
-            features: [data.features]
+            features: [data?.features]
         }
         
         console.log("New Subscription Added:", data);
@@ -98,7 +98,7 @@ function SubscriptionList() {
 
 
                 <button
-                    className={`px-4 py-2 rounded bg-blue-500 text-white dark:bg-blue-700 dark:text-white`}
+                    className="flex justify-center rounded py-2 px-6 font-medium text-white bg-[#A91D1D] hover:bg-opacity-90 dark:bg-[#A91D1D] dark:text-white dark:hover:bg-[#A91D1D] dark:hover:text-white"
                     onClick={() => setIsModalOpen(true)}
                 >
                     Add Subscription

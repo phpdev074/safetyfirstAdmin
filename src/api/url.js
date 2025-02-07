@@ -1,6 +1,6 @@
-export const BASE_URL = "https://rs8s65nn-3005.inc1.devtunnels.ms/admin/";
-export const IMAGE_BASE_URL = "https://rs8s65nn-3005.inc1.devtunnels.ms";
-export const API_BASE_URL = "https://rs8s65nn-3005.inc1.devtunnels.ms/api/";
+export const BASE_URL = "http://85.31.234.205:3005/admin/";
+export const IMAGE_BASE_URL = "http://85.31.234.205:3005";
+export const API_BASE_URL = "http://85.31.234.205:3005/api/";
 
 export const POST_METHOD = "POST";
 export const GET_METHOD = "GET";
