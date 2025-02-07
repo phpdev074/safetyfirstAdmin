@@ -17,7 +17,7 @@ import {
   GET_CONTACT_US_LIST,
   API_BASE_URL,
   SUBSCRIPTION,
-  SEND_HEALTH_TIPS
+  SEND_HEALTH_TIPS,
 } from "./url";
 
 export const uploadImage = (payload) => {
@@ -65,6 +65,29 @@ export const getUserList = (query) => {
   });
 };
 
+
+export const getscheduleUsers = (query) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: GET_METHOD,
+    url: `scheduleUsers`,
+  });
+};
+export const deleteScheduleUsers = (query) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: DELETE,
+    url: `scheduleUsers?id=${query}`,
+  });
+};
+export const createScheduleUsers = (payload) => {
+  return apiClient({
+    baseURL: API_BASE_URL,
+    method: POST_METHOD,
+    url: `scheduleUsers`,
+    data: payload,
+  });
+};
 
 export const getContactUsList = (query) => {
   return apiClient({

@@ -23,3 +23,5 @@ export const GET_CONTACT_US_LIST="getContactUs"
 export const SUBSCRIPTION ='subscription'
 
 export const SEND_HEALTH_TIPS ="auth/sendHealthTips"
+export const SCHEDULE_USERS ='scheduleUsers'
+

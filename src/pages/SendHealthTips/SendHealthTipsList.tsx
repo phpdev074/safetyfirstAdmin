@@ -1,11 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Pagination from '../../../components/Pagination';
-import { getUserList, updateUsers } from '../../../api/helper';
-import { ShowToast } from '../../../helpers/ToastService';
-import UserDetails from '../../UserDetails';
+import UserDetails from '../UserDetails';
+import Pagination from '../../components/Pagination';
+import { deleteScheduleUsers, getscheduleUsers, getUserList, sendHealthTipsApi, updateUsers } from '../../api/helper';
+import { ShowToast } from '../../helpers/ToastService';
 
-function AdvisorsRequestTable() {
-    const [info, setInfo] = useState<any>({ users: [] });
+interface SendHealthTipsModuleProps {
+    handleToggleView: () => void;  // Function type for the toggle view function
+}
+
+interface SendHealthTipsData {
+    users: { _id: string }[];  // assuming users is an array of objects with _id as string
+    title: string;
+    description: string;
+  }
+
+const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleView }) => {
+    const [info, setInfo] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -22,10 +32,9 @@ function AdvisorsRequestTable() {
         setModalData(null)
     };
 
-    const getUserData = async (page = 1,  search = "") => {
-        const response = await getUserList(`?limit=50&page=${page}&role=advisor&status=false&search=${search}`)
-        // const response = await getUserList(`?role=advisor&limit=50`)
-
+    const getUserData = async (page = 1, search = "") => {
+        const response = await getscheduleUsers()
+        // console.log(response.data.data,'====>response')
         setInfo(response.data.data)
     }
 
@@ -68,6 +77,29 @@ function AdvisorsRequestTable() {
         }
     }
 
+    const handelDelete = async (id: string) => {
+        const confirmMessage = `Are you sure you want to Delete?`;
+        const confirm = window.confirm(confirmMessage);
+        if (confirm) {
+            await deleteScheduleUsers(id)
+            ShowToast(`Delete successfully`);
+            getUserData(currentPage);
+        }
+    }
+
+
+    const sendTips =async(data:SendHealthTipsData)=>{
+        // console.log(data,'===>')
+        const users= data.users.map((e:any)=>e._id)
+        // console.log(users,'==>')
+        const sendData ={
+            users,
+            title:data.title,
+            description:data.description
+        }
+        const response = await sendHealthTipsApi(sendData)
+        ShowToast(response.data.message);
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -75,26 +107,23 @@ function AdvisorsRequestTable() {
             <div className="flex justify-between items-center mb-4">
                 <div className="flex gap-2" />
                 {/* Search Input */}
-                <input
-                    type="text"
-                    placeholder="Search "
-                    className="px-3 py-2 border rounded dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                />
+                <button onClick={handleToggleView}
+                    className="flex justify-center rounded py-2 px-6 font-medium text-white bg-[#A91D1D] hover:bg-opacity-90 dark:bg-[#A91D1D] dark:text-white dark:hover:bg-[#A91D1D] dark:hover:text-white"
+                >Add</button>
+
             </div>
             <div className="max-w-full overflow-x-auto">
                 <table className="w-full table-auto">
                     <thead>
                         <tr className="bg-gray-2 text-left dark:bg-meta-4">
                             <th className=" py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                Name
+                                Title
                             </th>
                             <th className=" py-4 px-4 font-medium text-black dark:text-white">
-                                Email
+                                Description
                             </th>
                             <th className=" py-4 px-4 font-medium text-black dark:text-white">
-                                Status
+                                Created
                             </th>
                             <th className="py-4 px-4 font-medium text-black dark:text-white">
                                 Actions
@@ -102,20 +131,25 @@ function AdvisorsRequestTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {info && info?.users?.map((packageItem: any, key: any) => (
+                        {info && info?.map((packageItem: any, key: any) => (
                             <tr key={key}>
                                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem?.name ?? 'N/A'}
+                                        {packageItem?.title ?? 'N/A'}
                                     </h5>
-                                    {/* <p className="text-sm">${packageItem?.name}</p> */}
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem?.email}
+                                        {packageItem?.description?.split(' ').slice(0, 50).join(' ')}{packageItem?.description?.split(' ').length > 50 ? '...' : ''}
                                     </p>
                                 </td>
+
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                    <p className="text-black dark:text-white">
+                                        {packageItem?.createdAt ? new Date(packageItem.createdAt).toLocaleDateString() : ''}
+                                    </p>
+                                </td>
+                                {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <button
                                         onClick={() => changeStatus(packageItem._id, true)}
                                         className={`inline-flex rounded-full py-1 px-3 text-sm font-medium cursor-pointer bg-opacity-10 bg-success text-success`} // Active button will be filled
@@ -129,11 +163,14 @@ function AdvisorsRequestTable() {
                                     >
                                         Reject
                                     </button>
-                                </td>
+                                </td> */}
+
+
 
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <div className="flex items-center space-x-3.5">
-                                        <button className="hover:text-primary"
+                                        <button className="hover:text-primary" onClick={()=>sendTips(packageItem)} >Send</button>
+                                        {/* <button className="hover:text-primary"
                                          onClick={() => openModal(packageItem)} 
                                         >
                                             <svg
@@ -153,9 +190,9 @@ function AdvisorsRequestTable() {
                                                     fill=""
                                                 />
                                             </svg>
-                                        </button>
+                                        </button> */}
                                         <button className="hover:text-primary"
-                                        //  onClick={() => handelDelete(packageItem?._id)} 
+                                            onClick={() => handelDelete(packageItem?._id)}
                                         >
                                             <svg
                                                 className="fill-current"
@@ -212,4 +249,4 @@ function AdvisorsRequestTable() {
     );
 }
 
-export default AdvisorsRequestTable
+export default SendHealthTipsList;

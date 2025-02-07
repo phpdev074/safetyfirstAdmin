@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getUserList, sendHealthTipsApi } from '../../api/helper';
+import { createScheduleUsers, getUserList, sendHealthTipsApi } from '../../api/helper';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IMAGE_BASE_URL } from '../../api/url';
 import { ShowToast } from '../../helpers/ToastService';
@@ -14,8 +14,11 @@ type Inputs = {
   title: string
   description: string
 }
+interface SendHealthTipsModuleProps {
+  handleToggleView: () => void;  // Function type for the toggle view function
+}
 
-function SendHealthTipsModule() {
+const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggleView }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>()
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [users, setUsers] = useState<User[]>();
@@ -46,9 +49,7 @@ function SendHealthTipsModule() {
   };
 
   const getUserData = async (page = 1) => {
-    // const response = await getUserList(`?limit=10&page=${page}&role=${roleType}&status=false&search=${search}`)
     const response = await getUserList(`?limit=100&page=${page}&status=true`)
-    // console.log(response.data.data.users, '==>>response.data.data')
     setUsers(response.data.data.users)
   }
 
@@ -65,10 +66,10 @@ function SendHealthTipsModule() {
       users: selectedUsers
     }
     try {
-      const response = await sendHealthTipsApi(senData)
-      ShowToast(response.data.message, "success")
+      await createScheduleUsers(senData)
       reset()
       setSelectedUsers([]);
+      handleToggleView()
     } catch (error) {
       console.log(error)
     }
@@ -133,8 +134,8 @@ function SendHealthTipsModule() {
 
                 <div className="flex justify-end gap-4.5">
                   <button
+                    onClick={handleToggleView}
                     className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    type="submit"
                   >
                     Cancel
                   </button>
