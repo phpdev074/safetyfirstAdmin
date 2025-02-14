@@ -20,7 +20,7 @@ const Login: React.FC = () => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
         try {
-            data = { ...data, role: "user" }
+            data = { ...data, role: "admin" }
             const newData = await AuthLogin(data)
             localStorage.setItem("token", newData.data.data.token)
             localStorage.setItem("user", JSON.stringify(newData.data.data.userData))

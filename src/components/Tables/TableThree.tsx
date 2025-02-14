@@ -137,17 +137,14 @@ const TableThree = () => {
               <th className=" py-4 px-4 font-medium text-black dark:text-white">
                 Email
               </th>
-
-
-              
-      
-                 <th className=" py-4 px-4 font-medium text-black dark:text-white">
-                 Code
-               </th>
-              
               <th className=" py-4 px-4 font-medium text-black dark:text-white">
-                Status
+                Code
               </th>
+
+              {viewType !== "user" && <th className=" py-4 px-4 font-medium text-black dark:text-white">
+                Status
+              </th>}
+
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Actions
               </th>
@@ -168,21 +165,25 @@ const TableThree = () => {
                   </p>
                 </td>
 
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {  viewType==="advisor"? packageItem?.uniqueCode:packageItem?.referrals[0]?.referralCode}
-                  </p>
-                </td> 
-                
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p onClick={() => changeStatus(packageItem._id, !packageItem?.status)}
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium cursor-pointer ${packageItem?.status === true
-                      ? 'bg-success text-success'
-                      : 'bg-danger text-danger'}`}
-                  >
-                    {packageItem?.status === false ? "Pending" : "Approved"}
+                  <p className="text-black dark:text-white">
+                    {viewType === "advisor" ? packageItem?.uniqueCode : packageItem?.referrals[0]?.referralCode}
                   </p>
                 </td>
+
+                {viewType !== "user" &&
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p onClick={() => changeStatus(packageItem._id, !packageItem?.status)}
+                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium cursor-pointer ${packageItem?.status === true
+                        ? 'bg-success text-success'
+                        : 'bg-danger text-danger'}`}
+                    >
+                      {packageItem?.status === false ? "Pending" : "Approved"}
+                    </p>
+                  </td>
+                }
+
+
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">

@@ -13,6 +13,7 @@ interface User {
 type Inputs = {
   title: string
   description: string
+  scheduleDate:Date
 }
 interface SendHealthTipsModuleProps {
   handleToggleView: () => void;  // Function type for the toggle view function
@@ -89,6 +90,28 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
               <form
                 onSubmit={handleSubmit(onSubmit)}
               >
+
+                <div className="mb-5.5">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="emailAddress"
+                  >
+                    Publish date
+                  </label>
+                  <div className="relative">
+
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="date"
+                      // name="title"
+                     
+                      placeholder="Enter scheduleDate"
+                      {...register("scheduleDate", { required: true })}
+                    // defaultValue={info?.scheduleDate}
+                    />
+                    {errors.scheduleDate && <span className='text-red-500'>This field is required</span>}
+                  </div>
+                </div>
                 <div className="mb-5.5">
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -143,7 +166,7 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
                     className="flex justify-center rounded py-2 px-6 font-medium text-white bg-[#A91D1D] hover:bg-opacity-90 dark:bg-[#A91D1D] dark:text-white dark:hover:bg-[#A91D1D] dark:hover:text-white"
                     type="submit"
                   >
-                    Send
+                    Save
                   </button>
 
                 </div>

@@ -15,7 +15,7 @@ interface SendHealthTipsData {
   }
 
 const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleView }) => {
-    const [info, setInfo] = useState<any>([]);
+    const [info, setInfo] = useState<any>({schedules:[]});
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchValue, setSearchValue] = useState('');
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -33,7 +33,7 @@ const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleV
     };
 
     const getUserData = async (page = 1, search = "") => {
-        const response = await getscheduleUsers()
+        const response = await getscheduleUsers(`?limit=10&page=${page}`)
         // console.log(response.data.data,'====>response')
         setInfo(response.data.data)
     }
@@ -123,7 +123,7 @@ const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleV
                                 Description
                             </th>
                             <th className=" py-4 px-4 font-medium text-black dark:text-white">
-                                Created
+                            Publish Date
                             </th>
                             <th className="py-4 px-4 font-medium text-black dark:text-white">
                                 Actions
@@ -131,7 +131,7 @@ const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleV
                         </tr>
                     </thead>
                     <tbody>
-                        {info && info?.map((packageItem: any, key: any) => (
+                        {info && info?.schedules?.map((packageItem: any, key: any) => (
                             <tr key={key}>
                                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                     <h5 className="font-medium text-black dark:text-white">
@@ -146,7 +146,7 @@ const SendHealthTipsList: React.FC<SendHealthTipsModuleProps> = ({ handleToggleV
 
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem?.createdAt ? new Date(packageItem.createdAt).toLocaleDateString() : ''}
+                                        {packageItem?.createdAt ? new Date(packageItem.scheduleDate).toLocaleDateString() : ''}
                                     </p>
                                 </td>
                                 {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

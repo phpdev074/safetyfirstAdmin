@@ -70,7 +70,7 @@ export const getscheduleUsers = (query) => {
   return apiClient({
     baseURL: API_BASE_URL,
     method: GET_METHOD,
-    url: `scheduleUsers`,
+    url: `scheduleUsers${query ? query : ""}`,
   });
 };
 export const deleteScheduleUsers = (query) => {
