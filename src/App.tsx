@@ -24,6 +24,7 @@ import Subscription from './pages/Components/Subscription/Subscription';
 import AdvisorsRequest from './pages/Components/AdvisorsRequest/AdvisorsRequest';
 import UserSubscription from './pages/Components/UserSubscription/UserSubscription';
 import SendHealthTips from './pages/SendHealthTips/SendHealthTips';
+import Loading from './pages/Loading';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);

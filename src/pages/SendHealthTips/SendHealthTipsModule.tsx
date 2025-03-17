@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { createScheduleUsers, getUserList, sendHealthTipsApi } from '../../api/helper';
+import { createScheduleUsers } from '../../api/helper';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IMAGE_BASE_URL } from '../../api/url';
 import { ShowToast } from '../../helpers/ToastService';
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  image: string;
-  status: boolean;
-}
+import { getUserSubscriptionList } from '../../api/subscription';
+
 type Inputs = {
   title: string
   description: string
-  scheduleDate:Date
+  scheduleDate: Date
 }
 interface SendHealthTipsModuleProps {
-  handleToggleView: () => void;  // Function type for the toggle view function
+  handleToggleView: () => void;  
 }
 
 const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggleView }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>()
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [users, setUsers] = useState<User[]>();
+  const [users, setUsers] = useState<any>();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectAll && users) {
-      setSelectedUsers(users?.map((user: any) => user._id));
+      setSelectedUsers(users?.map((user: any) => user?.userId._id));
     } else {
       setSelectedUsers([]);
     }
@@ -37,6 +32,7 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
   const handleCheckboxChange = (userId: string, isChecked: boolean) => {
     if (isChecked) {
       setSelectedUsers((prevSelected) => [...prevSelected, userId]);
+
     } else {
       setSelectedUsers((prevSelected) =>
         prevSelected.filter((id) => id !== userId)
@@ -50,8 +46,10 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
   };
 
   const getUserData = async (page = 1) => {
-    const response = await getUserList(`?limit=100&page=${page}&status=true`)
+    const response = await getUserSubscriptionList(`?limit=100&page=${page}&status=true`)
     setUsers(response.data.data.users)
+    const dd = response.data.data.users
+    setSelectAll(dd?.map((user: any) => user?.userId._id))
   }
 
   useEffect(() => {
@@ -90,7 +88,6 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
               <form
                 onSubmit={handleSubmit(onSubmit)}
               >
-
                 <div className="mb-5.5">
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -104,7 +101,7 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
                       className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="date"
                       // name="title"
-                     
+
                       placeholder="Enter scheduleDate"
                       {...register("scheduleDate", { required: true })}
                     // defaultValue={info?.scheduleDate}
@@ -189,19 +186,19 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
               </label>
             </div>
             <div className="max-h-96 overflow-y-auto p-8">
-              {users?.map((user) => (
+              {users?.map((user: any) => (
                 <div key={user._id} className="flex items-center justify-between mb-4">
                   {/* User Image */}
                   <div className="flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src={IMAGE_BASE_URL + user.image || 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Ddefault&psig=AOvVaw1wj2RPPgUabua7n7fHSdeS&ust=1738671899638000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNi3zNm_p4sDFQAAAAAdAAAAABAE'}
-                        alt={user.name}
+                        src={(user?.userId?.image != undefined || user?.userId?.image == "") ? IMAGE_BASE_URL + user?.userId?.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpbF9MRc872DyqrFDJJ3MRq68r08IaEKCNGzAqYNpeSK38HOao_E2_50CtB2V4TGM_5ag&usqp=CAU'}
+                        alt={user.userId?.image}
                       />
                     </div>
                     <div>
-                      <span className="text-black dark:text-white">{user.name}</span>
+                      <span className="text-black dark:text-white">{user?.userId?.name}</span>
                     </div>
                   </div>
 
@@ -210,8 +207,8 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
                     <label className="flex items-center">
                       <input
                         type="checkbox"
-                        checked={selectedUsers.includes(user._id)} // Check if user is selected
-                        onChange={(e) => handleCheckboxChange(user._id, e.target.checked)} // Handle checkbox change
+                        checked={selectedUsers.includes(user?.userId?._id)} // Check if user is selected
+                        onChange={(e) => handleCheckboxChange(user?.userId?._id, e.target.checked)} // Handle checkbox change
                         className="form-checkbox h-5 w-5 text-white bg-[#A91D1D] border-[#A91D1D] dark:bg-[#A91D1D] dark:border-[#A91D1D] dark:checked:bg-[#A91D1D] dark:checked:border-[#A91D1D] checked:bg-[#A91D1D] checked:border-[#A91D1D] hover:bg-opacity-90"
                       />
 
