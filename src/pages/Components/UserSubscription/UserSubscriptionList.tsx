@@ -65,7 +65,7 @@ function UserSubscriptionList() {
         // console.log(data._id,'===>',data.userId._id)
         try {
             const isConfirmed = window.confirm("Are you sure you want to send ?");
-            console.log(isConfirmed,'==>isConfirmed')
+            console.log(isConfirmed, '==>isConfirmed')
             if (isConfirmed) {
                 await transferCommissionAdvisor(`?id=${data._id}&userId=${data.userId._id}`)
                 ShowToast("send Successfully", 'success')
@@ -135,27 +135,42 @@ function UserSubscriptionList() {
 
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        ${packageItem?.price/100}
+                                        ${packageItem?.price / 100}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {new Date(packageItem.createdAt).toLocaleDateString()}
+                                        {new Date(packageItem.createdAt).toLocaleDateString('en-GB', {
+                                            day: '2-digit',
+                                            month: 'short', // 'short' gives the abbreviated month (e.g., 'Mar')
+                                            year: 'numeric',
+                                        }).replace(/ /g, '-')}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
                                         {packageItem?.createdAt
-                                            ? new Date(new Date(packageItem.createdAt).setFullYear(new Date(packageItem.createdAt).getFullYear() + 1)).toLocaleDateString()
+                                            ? new Date(
+                                                new Date(packageItem.createdAt).setDate(
+                                                    new Date(packageItem.createdAt).getDate() + 7
+                                                )
+                                            )
+                                                .toLocaleDateString('en-GB', {
+                                                    day: '2-digit',
+                                                    month: 'short', // Abbreviated month name (e.g., "Mar")
+                                                    year: 'numeric',
+                                                })
+                                                .replace(/ /g, '-') // Replace spaces with hyphens
                                             : ''}
                                     </p>
+
                                 </td>
 
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <div className="flex items-center space-x-3.5">
-                                        {!packageItem.isTransfered &&
+                                        {/* {!packageItem.isTransfered &&
                                             <button onClick={() => sendCommisiion(packageItem)} >Send</button>
-                                        }
+                                        } */}
 
                                         <button className="hover:text-primary"
                                             onClick={() => openModal(packageItem)}
@@ -168,7 +183,7 @@ function UserSubscriptionList() {
                                                 fill="none"
                                                 xmlns="http://www.w3.org/2000/svg"
                                             >
-                                               
+
                                                 <path
                                                     d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
                                                     fill=""

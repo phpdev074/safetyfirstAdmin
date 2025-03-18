@@ -3,16 +3,16 @@ import { useState } from "react";
 interface Subscription {
   name: string;
   price: number;
-  duration: "monthly" | "yearly";
+  duration: "monthly" | "yearly" | "weekly";
   features: string[];
   status: "active" | "inactive";
 }
 
 const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: () => void; onSubmit: (data: Subscription) => void }) => {
   const [formData, setFormData] = useState<Subscription>({
-    name: "",
-    price: 0,
-    duration: "yearly",
+    name: "Health Tips",
+    price: 29.95,
+    duration: "weekly",
     features: [],
     status: "active",
   });
@@ -30,9 +30,9 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
   const handleSubmit = () => {
     onSubmit(formData);
     setFormData({
-      name: "",
-      price: 0,
-      duration: "yearly",
+      name: "Health Tips",
+      price: 29.95,
+      duration: "weekly",
       features: [],
       status: "active",
     });
@@ -73,7 +73,7 @@ const SubscriptionModal = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onC
 
         {/* Duration Select */}
         <select name="duration" value={formData.duration} onChange={handleChange} className="w-full p-2 mb-3 border rounded">
-          <option value="weekly">Weekly</option>
+          <option value="weekly" >Weekly</option>
           <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
         </select>

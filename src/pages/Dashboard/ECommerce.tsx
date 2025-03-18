@@ -51,7 +51,7 @@ const ECommerce: React.FC = () => {
           </svg>
         </CardDataStats>
 
-
+{/* 
         <CardDataStats title="Active Users" total={info?.activeUsers || 0}
         >
           <svg
@@ -70,7 +70,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
 
-        </CardDataStats>
+        </CardDataStats> */}
 
 
         {/* Total Advisors */}
@@ -92,7 +92,7 @@ const ECommerce: React.FC = () => {
 
         </CardDataStats>
 
-        <CardDataStats title="Active Advisor" total={info?.activeAdvisor || 0}
+        {/* <CardDataStats title="Active Advisor" total={info?.activeAdvisor || 0}
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -117,9 +117,9 @@ const ECommerce: React.FC = () => {
             />
           </svg>
 
-        </CardDataStats>
+        </CardDataStats> */}
 
-        <CardDataStats title="Active Subscriber" total={info?.activeSubscriber || 0}// not get in api==> activeSubscriber key
+        {/* <CardDataStats title="Active Subscriber" total={info?.activeSubscriber || 0}// not get in api==> activeSubscriber key
         >
           <svg
             className="fill-primary dark:fill-white"
@@ -147,7 +147,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
 
-        </CardDataStats>
+        </CardDataStats> */}
 
 
         <CardDataStats title="Total Subscriber" total={info?.totalSubscriber || 0} // not get in api==> totalSubscriber key

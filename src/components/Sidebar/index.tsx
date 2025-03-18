@@ -262,7 +262,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill="currentColor"
                     />
                   </svg>
-                  Subscription list
+                  Subscribed User
                 </NavLink>
               </li>
 
