@@ -17,6 +17,7 @@ interface SendHealthTipsModuleProps {
 const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggleView }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>()
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [minDate, setMinDate] = useState('');
   const [users, setUsers] = useState<any>();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -28,6 +29,15 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
       setSelectedUsers([]);
     }
   }, [selectAll, users]);
+
+ 
+
+  // Set the min date to today's date
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    setMinDate(formattedDate);
+  }, []);
 
   const handleCheckboxChange = (userId: string, isChecked: boolean) => {
     if (isChecked) {
@@ -100,11 +110,9 @@ const SendHealthTipsModule: React.FC<SendHealthTipsModuleProps> = ({ handleToggl
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="date"
-                      // name="title"
-
+                      min={minDate}
                       placeholder="Enter scheduleDate"
                       {...register("scheduleDate", { required: true })}
-                    // defaultValue={info?.scheduleDate}
                     />
                     {errors.scheduleDate && <span className='text-red-500'>This field is required</span>}
                   </div>

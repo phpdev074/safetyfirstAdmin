@@ -38,7 +38,7 @@ function SubscriptionList() {
 
     const getContactData = async (page = 1, search = "") => {
         const response = await getSubscriptionList(`?limit=10&page=${page}&search=${search}`)
-        console.log(response.data.data, '====>>response')
+        // console.log(response.data.data, '====>>response')
         setInfo(response.data.data)
     }
 
@@ -97,12 +97,12 @@ function SubscriptionList() {
                 </div>
 
 
-                <button
+                {/* <button
                     className="flex justify-center rounded py-2 px-6 font-medium text-white bg-[#A91D1D] hover:bg-opacity-90 dark:bg-[#A91D1D] dark:text-white dark:hover:bg-[#A91D1D] dark:hover:text-white"
                     onClick={() => setIsModalOpen(true)}
                 >
                     Add Subscription
-                </button>
+                </button> */}
                 <SubscriptionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleAddSubscription} />
             </div>
             <div className="max-w-full overflow-x-auto">
@@ -143,7 +143,7 @@ function SubscriptionList() {
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem?.duration == 'yearly' ? "Yearly" : "Monthly"}
+                                        {packageItem?.duration == 'yearly' ? "Yearly" : "Weekly"}
                                     </p>
                                 </td>
 
